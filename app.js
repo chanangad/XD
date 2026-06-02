@@ -1,5 +1,5 @@
 // Point this at your deployed Cloudflare Worker (matches source/MonetizationConfig.mc WORKER_BASE).
-const API_BASE = "https://xdrip-aaps-unlock-worker.workers.dev";
+const API_BASE = "https://xdrip-aaps-unlock-worker.roxzone.workers.dev";
 
 function query(name) {
   const params = new URLSearchParams(window.location.search);
