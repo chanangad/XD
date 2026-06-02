@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Purchase Complete | XDrip+/AAPS Watch Face</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles.css">
+</head>
+
+<body>
+  <header class="topbar">
+    <a class="topbar__brand notranslate" translate="no" href="../">XDRIP+/AAPS</a>
+    <nav class="topbar__nav">
+      <a href="../" class="topbar__tab topbar__tab--active">Store</a>
+    </nav>
+  </header>
+
+  <main class="page-shell">
+    <section class="panel panel--narrow">
+      <h1 id="success-title" class="panel__title">Confirming your donation&hellip;</h1>
+      <p id="success-copy" class="page-copy">
+        Confirming with the backend. Please keep this page open for a moment.
+      </p>
+      <p id="success-status" class="helper-note">
+        Finalizing checkout...
+      </p>
+      <div class="action-row">
+        <a class="action-link action-link--primary" href="../">Back to Home</a>
+      </div>
+    </section>
+  </main>
+
+  <script src="../app.js"></script>
+  <script>
+    const successTitle = document.getElementById("success-title");
+    const successCopy = document.getElementById("success-copy");
+    const successStatus = document.getElementById("success-status");
+
+    // PayPal redirect appends ?token=<orderId>&PayerID=... to the return URL.
+    const paypalToken = query("token").trim();
+    // Razorpay callback appends razorpay_payment_link_reference_id = claim code.
+    const razorpayClaimCode = query("razorpay_payment_link_reference_id").trim().toUpperCase();
+    const directClaimCode = query("code").trim().toUpperCase();
+    const claimCode = razorpayClaimCode || directClaimCode;
+
+    function setMessage(title, copy, status, kind) {
+      if (title) {
+        successTitle.textContent = title;
+      }
+      successCopy.innerHTML = copy;
+      successStatus.textContent = status;
+      successStatus.className = `helper-note helper-note--${kind}`;
+    }
+
+    const PAID_COPY = "Thank you for your donation! Return to the watch face — it unlocks itself automatically within a few minutes once it next syncs.";
+    const NOT_CHARGED_COPY = "We couldn't complete your donation, so <strong>you have not been charged</strong>. Please go back and try again.";
+
+    async function pollLicensePaid(code) {
+      const maxAttempts = 10;
+      for (let attempt = 0; attempt < maxAttempts; attempt++) {
+        try {
+          const response = await fetch(`${API_BASE}/api/license/status?code=${encodeURIComponent(code)}`);
+          if (response.ok) {
+            const data = await response.json();
+            if (data && data.licenseState === "paid") {
+              return true;
+            }
+          }
+        } catch (_) {
+          // ignore and retry
+        }
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+      }
+      return false;
+    }
+
+    async function finalizeCheckout() {
+      // PayPal: capture the approved order, then mark paid.
+      if (paypalToken) {
+        try {
+          await postJson("/api/paypal/capture-order", { orderId: paypalToken });
+          setMessage("Payment Complete", PAID_COPY, "PayPal payment captured successfully.", "ok");
+        } catch (error) {
+          setMessage("Payment Not Completed", NOT_CHARGED_COPY, error.message, "warn");
+        }
+        return;
+      }
+
+      // Razorpay: confirm against backend state via the webhook.
+      if (claimCode) {
+        setMessage(null, "Thanks for your purchase. Confirming with our servers&hellip;", "Waiting for payment confirmation\u2026", "ok");
+        const paid = await pollLicensePaid(claimCode);
+        if (paid) {
+          setMessage("Payment Complete", PAID_COPY, "Payment confirmed.", "ok");
+        } else {
+          setMessage(
+            "Almost there&hellip;",
+            "Your payment was received but our servers are still finalizing it. The watch face will unlock automatically once it syncs in a minute or two.",
+            "Still finalizing \u2014 the webhook may take a few extra seconds.",
+            "warn"
+          );
+        }
+        return;
+      }
+
+      setMessage(
+        "Payment Status Unknown",
+        "This page works best when opened after a checkout redirect.",
+        "No payment reference was found in the URL.",
+        "warn"
+      );
+    }
+
+    finalizeCheckout();
+  </script>
+</body>
+
+</html>
