@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex, nofollow">
-  <title>Purchase Complete | XDrip+/AAPS Watch Face</title>
+  <title>Unlock Status | XDrip+/AAPS Watch Face</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -16,21 +16,21 @@
   <header class="topbar">
     <a class="topbar__brand notranslate" translate="no" href="../">XDRIP+/AAPS</a>
     <nav class="topbar__nav">
-      <a href="../" class="topbar__tab topbar__tab--active">Store</a>
+      <a href="../" class="topbar__tab topbar__tab--active">Support</a>
     </nav>
   </header>
 
   <main class="page-shell">
     <section class="panel panel--narrow">
-      <h1 id="success-title" class="panel__title">Confirming your donation&hellip;</h1>
+      <h1 id="success-title" class="panel__title">Confirming your support&hellip;</h1>
       <p id="success-copy" class="page-copy">
-        Confirming with the backend. Please keep this page open for a moment.
+        We're confirming your support and preparing the unlock. Please keep this page open for a moment.
       </p>
       <p id="success-status" class="helper-note">
         Finalizing checkout...
       </p>
       <div class="action-row">
-        <a class="action-link action-link--primary" href="../">Back to Home</a>
+        <a class="action-link action-link--primary" href="../">Back to support page</a>
       </div>
     </section>
   </main>
@@ -43,10 +43,11 @@
 
     // PayPal redirect appends ?token=<orderId>&PayerID=... to the return URL.
     const paypalToken = query("token").trim();
-    // Razorpay callback appends razorpay_payment_link_reference_id = claim code.
-    const razorpayClaimCode = query("razorpay_payment_link_reference_id").trim().toUpperCase();
+    // Dodo Payments appends payment_id/status/email to the return URL.
+    const dodoPaymentId = query("payment_id").trim();
+    const dodoStatus = query("status").trim().toLowerCase();
     const directClaimCode = query("code").trim().toUpperCase();
-    const claimCode = razorpayClaimCode || directClaimCode;
+    const claimCode = directClaimCode;
 
     function setMessage(title, copy, status, kind) {
       if (title) {
@@ -57,8 +58,8 @@
       successStatus.className = `helper-note helper-note--${kind}`;
     }
 
-    const PAID_COPY = "Thank you for your donation! Return to the watch face — it unlocks itself automatically within a few minutes once it next syncs.";
-    const NOT_CHARGED_COPY = "We couldn't complete your donation, so <strong>you have not been charged</strong>. Please go back and try again.";
+    const PAID_COPY = "Thank you for supporting development! Return to the watch face — it unlocks itself automatically within a few minutes once it next syncs.";
+    const NOT_CHARGED_COPY = "We couldn't complete the checkout, so <strong>you have not been charged</strong>. Please go back and try again.";
 
     async function pollLicensePaid(code) {
       const maxAttempts = 10;
@@ -84,24 +85,42 @@
       if (paypalToken) {
         try {
           await postJson("/api/paypal/capture-order", { orderId: paypalToken });
-          setMessage("Payment Complete", PAID_COPY, "PayPal payment captured successfully.", "ok");
+          setMessage("Support Received", PAID_COPY, "PayPal checkout confirmed.", "ok");
         } catch (error) {
-          setMessage("Payment Not Completed", NOT_CHARGED_COPY, error.message, "warn");
+          setMessage("Checkout Not Completed", NOT_CHARGED_COPY, error.message, "warn");
         }
         return;
       }
 
-      // Razorpay: confirm against backend state via the webhook.
-      if (claimCode) {
-        setMessage(null, "Thanks for your purchase. Confirming with our servers&hellip;", "Waiting for payment confirmation\u2026", "ok");
+      // Dodo Payments: confirm against backend state via the webhook.
+      if (dodoPaymentId || claimCode) {
+        if (dodoStatus && dodoStatus !== "succeeded") {
+          setMessage(
+            "Checkout Not Completed",
+            NOT_CHARGED_COPY,
+            `Dodo Payments reported status: ${dodoStatus}.`,
+            "warn"
+          );
+          return;
+        }
+        if (!claimCode) {
+          setMessage(
+            "Unlock Status Unknown",
+            "The checkout returned successfully, but the claim code was missing from the return URL.",
+            "Please reopen the support page from your watch face and try again.",
+            "warn"
+          );
+          return;
+        }
+        setMessage(null, "Thanks for supporting the project. We're confirming everything with our servers&hellip;", "Waiting for payment confirmation\u2026", "ok");
         const paid = await pollLicensePaid(claimCode);
         if (paid) {
-          setMessage("Payment Complete", PAID_COPY, "Payment confirmed.", "ok");
+          setMessage("Support Received", PAID_COPY, "Dodo Payments checkout confirmed.", "ok");
         } else {
           setMessage(
             "Almost there&hellip;",
-            "Your payment was received but our servers are still finalizing it. The watch face will unlock automatically once it syncs in a minute or two.",
-            "Still finalizing \u2014 the webhook may take a few extra seconds.",
+            "Your payment was received and we're still finalizing the unlock. The watch face should unlock automatically once it syncs in a minute or two.",
+            "Still finalizing \u2014 this can take a few extra seconds.",
             "warn"
           );
         }
@@ -109,7 +128,7 @@
       }
 
       setMessage(
-        "Payment Status Unknown",
+        "Unlock Status Unknown",
         "This page works best when opened after a checkout redirect.",
         "No payment reference was found in the URL.",
         "warn"

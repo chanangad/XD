@@ -588,11 +588,34 @@ font[style*="background-color"] {
     text-transform: none;
 }
 
+.page-copy.panel__intro {
+    width: 100%;
+    max-width: none;
+    margin-bottom: 1.5rem;
+}
+
+.helper-note.panel__contact {
+    width: 100%;
+    max-width: none;
+    margin: -0.15rem 0 1.7rem;
+    color: var(--muted);
+    font-size: 0.95rem;
+    line-height: 1.65;
+}
+
+.panel__contact a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
 .panel__tabs {
-    display: inline-flex;
+    display: flex;
     gap: 0.4rem;
+    width: fit-content;
+    max-width: 100%;
     padding: 0.4rem;
-    margin-bottom: 2rem;
+    margin-bottom: 1.15rem;
     border-radius: 1rem;
     background: var(--surface-lowest);
 }
@@ -774,11 +797,6 @@ font[style*="background-color"] {
 .pay-button--dodo {
     background: var(--primary-strong);
     color: var(--on-primary);
-}
-
-.pay-button--razorpay {
-    background: var(--secondary-strong);
-    color: var(--on-secondary);
 }
 
 .pay-button--paypal {

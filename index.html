@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>XDrip+/AAPS Watch Face | Glucose on Garmin</title>
-  <meta name="description" content="A Garmin watch face for AndroidAPS and xDrip+ users: live glucose, trend, IOB/COB and a background graph. Free to try for 12 hours, then donate and use.">
+  <meta name="description" content="A Garmin watch face for AndroidAPS and xDrip+ users: live glucose, trend, IOB/COB and a background graph. Free to try for 5 hours, then support development to unlock it.">
   <meta name="theme-color" content="#0f1715">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,7 +18,7 @@
   <header class="topbar">
     <a href="./" class="topbar__brand notranslate" translate="no">XDRIP+/AAPS</a>
     <nav class="topbar__nav">
-      <a href="./" class="topbar__tab topbar__tab--active">Store</a>
+      <a href="./" class="topbar__tab topbar__tab--active">Support</a>
     </nav>
   </header>
 
@@ -31,7 +31,6 @@
       </div>
 
       <div class="hero__content">
-        <div class="hero__badge">Free to try ·5 hours</div>
         <h1 class="hero__title">
           XDrip+/AAPS
           <span>Watch Face</span>
@@ -44,7 +43,7 @@
 
         <div class="price-card">
           <div class="price-card__top">
-            <span class="price-card__eyebrow">Free to try for 5 hours &middot; Donate and use</span>
+            <span class="price-card__eyebrow">Free to try for 5 hours &middot; Support development to unlock</span>
             <a class="connect-iq-badge connect-iq-badge--in-card" href="https://apps.garmin.com/apps/359e957d-851d-4ecf-9872-c50040470f26" target="_blank"
               rel="noreferrer">
               <img src="./assets/connect-iq-badge-white.svg" alt="Available on Connect IQ" width="278" height="95">
@@ -54,28 +53,34 @@
             <div class="price-amounts">
               <div class="price-block">
                 <div class="price-card__amount">From&nbsp;$3</div>
-                <div class="price-card__region">Your choice</div>
+                <div class="price-card__region">One-time support</div>
               </div>
               <div class="price-divider"></div>
               <div class="price-block">
                 <div class="price-card__amount price-card__amount--inr">$5</div>
-                <div class="price-card__region price-card__region--inr">Most common</div>
+                <div class="price-card__region price-card__region--inr">Popular choice</div>
               </div>
             </div>
-            <p class="price-card__copy">Try it free for 5 hours. After that, donate to keep using the watch face.</p>
           </div>
         </div>
       </div>
     </section>
 
     <section class="panel" id="license">
-      <h2 class="panel__title">Donate and use</h2>
+      <h2 class="panel__title">Support the developer, unlock your watch face</h2>
+      <p class="page-copy panel__intro">
+        If this watch face helps you, choose any amount from $3 to support future updates and unlock it on your
+        watch. No subscription, just a one-time contribution.
+      </p>
+      <p class="helper-note panel__contact">
+        For feature or integration requests, shoot an email to <a href="mailto:chanangadhere@gmail.com">chanangadhere@gmail.com</a>.
+      </p>
 
-      <div class="panel__tabs" role="tablist" aria-label="Donation tabs">
+      <div class="panel__tabs" role="tablist" aria-label="Support tabs">
         <button type="button" id="tab-unlock" class="panel__tab panel__tab--active" data-tab="unlock" role="tab"
-          aria-controls="panel-unlock" aria-selected="true">Donate</button>
+          aria-controls="panel-unlock" aria-selected="true">Support &amp; unlock</button>
         <button type="button" id="tab-restore" class="panel__tab" data-tab="restore" role="tab"
-          aria-controls="panel-restore" aria-selected="false">Restore</button>
+          aria-controls="panel-restore" aria-selected="false">Restore access</button>
       </div>
 
       <section id="panel-unlock" class="panel__content panel__content--active" role="tabpanel"
@@ -101,7 +106,7 @@
             </div>
             <div class="form-row">
               <div class="field">
-                <label for="unlock-amount-select">Amount</label>
+                <label for="unlock-amount-select">Support amount</label>
                 <select id="unlock-amount-select" name="amount-preset">
                   <option value="3">$3</option>
                   <option value="4">$4</option>
@@ -120,21 +125,19 @@
                 </div>
               </div>
             </div>
-            <p class="hint-copy">Choose your donation amount &mdash; minimum $3.</p>
+            <p class="hint-copy">Choose the amount you'd like to contribute &mdash; minimum $3.</p>
           </form>
 
           <div class="payment-stack">
             <div class="payment-group">
-              <p class="hint-copy">International</p>
               <div class="payment-group__buttons">
-                <button type="submit" form="unlock-form" class="pay-button pay-button--paypal">Donate via PayPal</button>
+                <button type="submit" form="unlock-form" class="pay-button pay-button--paypal">Support via PayPal</button>
               </div>
             </div>
 
             <div class="payment-group">
-              <p class="hint-copy">India</p>
               <div class="payment-group__buttons">
-                <button type="button" id="razorpay-button" class="pay-button pay-button--razorpay">Donate via Razorpay</button>
+                <button type="button" id="dodo-button" class="pay-button pay-button--dodo">Support via Dodo Payments</button>
               </div>
             </div>
           </div>
@@ -145,8 +148,8 @@
               <path d="M12 2L4 6v6c0 5 3.5 8.5 8 10 4.5-1.5 8-5 8-10V6l-8-4z" />
               <path d="M9 12l2 2 4-4" />
             </svg>
-            <span>Find your claim code on the watch face's lock screen. After donating, the
-              watch unlocks itself automatically within a few minutes.</span>
+            <span>Find your claim code on the watch face lock screen. After checkout, the watch face unlocks
+              automatically within a few minutes.</span>
           </p>
 
           <p id="unlock-status" class="helper-note panel__note"></p>
@@ -171,13 +174,13 @@
 
           <div class="payment-stack payment-stack--restore">
             <div class="payment-option payment-option--restore">
-              <p class="hint-copy">Use the same email you used for your original donation.</p>
-              <button type="submit" form="restore-form" class="pay-button pay-button--restore">Restore</button>
+              <p class="hint-copy">Use the same email you used when you first supported the project.</p>
+              <button type="submit" form="restore-form" class="pay-button pay-button--restore">Restore unlock</button>
             </div>
             <div class="payment-option payment-option--ghost" aria-hidden="true"></div>
           </div>
 
-          <p id="restore-status" class="helper-note panel__note">After restoring, return to the watch face and wait a few minutes for it to refresh automatically.</p>
+          <p id="restore-status" class="helper-note panel__note">After restoring, return to the watch face and give it a few minutes to refresh automatically.</p>
         </div>
       </section>
     </section>
@@ -302,10 +305,10 @@
             return;
           }
         } else {
-          setPanelStatus(unlockStatus, "Creating Razorpay checkout\u2026");
-          const data = await postJson("/api/razorpay/create-link", payload);
-          if (data && data.shortUrl) {
-            window.location.href = data.shortUrl;
+          setPanelStatus(unlockStatus, "Creating Dodo Payments checkout\u2026");
+          const data = await postJson("/api/dodo/create-checkout", payload);
+          if (data && data.checkoutUrl) {
+            window.location.href = data.checkoutUrl;
             return;
           }
         }
@@ -319,8 +322,8 @@
       event.preventDefault();
       await beginCheckout("paypal");
     });
-    document.getElementById("razorpay-button").addEventListener("click", async () => {
-      await beginCheckout("razorpay");
+    document.getElementById("dodo-button").addEventListener("click", async () => {
+      await beginCheckout("dodo");
     });
 
     document.getElementById("restore-form").addEventListener("submit", async (event) => {
@@ -333,14 +336,14 @@
         return;
       }
       if (!email) {
-        setPanelStatus(restoreStatus, "Enter the email used for your original donation.", "warn");
+        setPanelStatus(restoreStatus, "Enter the email you used when you first supported the project.", "warn");
         return;
       }
-      setPanelStatus(restoreStatus, "Checking your donation\u2026");
+      setPanelStatus(restoreStatus, "Checking your support\u2026");
       try {
         const requestData = await postJson("/api/restore/request", { claimCode, email });
         if (!requestData.canRestore) {
-          setPanelStatus(restoreStatus, "No donation found for that email.", "warn");
+          setPanelStatus(restoreStatus, "We couldn't find a previous unlock for that email.", "warn");
           return;
         }
         const data = await postJson("/api/restore/complete", { claimCode, email });
