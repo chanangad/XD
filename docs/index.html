@@ -7,6 +7,8 @@
   <title>Setup Guide — LoopFace</title>
   <meta name="description" content="Step-by-step instructions for connecting LoopFace to AndroidAPS, xDrip+ or Spike on your Garmin watch.">
   <meta name="theme-color" content="#0f1715">
+  <link rel="icon" type="image/png" href="../assets/loopface-favicon.png">
+  <link rel="apple-touch-icon" href="../assets/loopface-favicon.png">
   <link rel="canonical" href="https://loopface.app/docs/">
 
   <!-- Open Graph -->
@@ -630,6 +632,7 @@
           <li><a href="#aaps" class="sidebar__link">AndroidAPS</a></li>
           <li><a href="#xdrip" class="sidebar__link">xDrip+</a></li>
           <li><a href="#spike" class="sidebar__link">Spike (iOS)</a></li>
+          <li><a href="#nightscout" class="sidebar__link">Nightscout</a></li>
         </ul>
       </div>
       <div class="sidebar__section">
@@ -650,17 +653,17 @@
         <span class="breadcrumb__sep">›</span>
         <span>Documentation</span>
         <span class="breadcrumb__sep">›</span>
-        <span>xDrip+, AAPS &amp; Spike — Setup</span>
+        <span>xDrip+, AAPS, Spike &amp; Nightscout — Setup</span>
       </nav>
 
       <!-- Page header -->
       <header class="docs-page-header" id="intro">
         <span class="docs-eyebrow">Documentation</span>
-        <h1 class="docs-title">xDrip+, AAPS &amp; Spike — Installation &amp; Setup</h1>
+        <h1 class="docs-title">xDrip+, AAPS, Spike &amp; Nightscout — Installation &amp; Setup</h1>
         <p class="docs-subtitle">
-          Connect your CGM data directly from your phone to your Garmin watch using
-          xDrip+ (Android), AAPS (Android), or Spike (iOS).
-          No internet connection required — data flows locally over Bluetooth.
+          Connect your CGM data to your Garmin watch using xDrip+ (Android), AAPS (Android),
+          Spike (iOS), or Nightscout. Local sources work without internet — data flows over Bluetooth.
+          Nightscout requires your site to be reachable from your phone.
         </p>
       </header>
 
@@ -675,6 +678,7 @@
               <li>Install xDrip+ (Android)</li>
               <li>Or AAPS (Android)</li>
               <li>Or Spike (iOS)</li>
+              <li>Or use Nightscout</li>
             </ul>
           </div>
           <div class="quick-step">
@@ -750,11 +754,20 @@
               <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
             </a>
           </div>
+          <div class="app-card">
+            <div class="app-card__os">Android &amp; iOS</div>
+            <div class="app-card__name">Nightscout</div>
+            <p class="app-card__desc">Self-hosted CGM data platform. Works with any CGM that uploads to it. LoopFace reads glucose data directly from your Nightscout URL.</p>
+            <a href="https://nightscout.github.io" target="_blank" rel="noreferrer" class="app-card__link">
+              nightscout.github.io
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            </a>
+          </div>
         </div>
 
         <div class="callout callout--info">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-          <span>These apps are not available in app stores. Download them from the links above and follow each app's own installation guide carefully.</span>
+          <span>xDrip+, AAPS and Spike are not available in app stores. Download them from the links above and follow each app's own installation guide. Nightscout requires hosting — see <a href="https://nightscout.github.io/nightscout/new_user/" target="_blank" rel="noreferrer" style="color:var(--accent)">nightscout.github.io</a> to get started.</span>
         </div>
       </section>
 
@@ -820,9 +833,11 @@
           <button class="source-tab active" data-panel="aaps" role="tab" aria-selected="true" aria-controls="cfg-aaps">AndroidAPS</button>
           <button class="source-tab" data-panel="xdrip" role="tab" aria-selected="false" aria-controls="cfg-xdrip">xDrip+</button>
           <button class="source-tab" data-panel="spike" role="tab" aria-selected="false" aria-controls="cfg-spike">Spike (iOS)</button>
+          <button class="source-tab" data-panel="nightscout" role="tab" aria-selected="false" aria-controls="cfg-nightscout">Nightscout</button>
         </div>
 
         <!-- AAPS panel -->
+        <span id="aaps" style="display:block;height:0;visibility:hidden"></span>
         <div id="cfg-aaps" class="source-panel instr-panel active" role="tabpanel">
           <ol class="instr-steps">
             <li class="instr-step">
@@ -870,6 +885,7 @@
         </div>
 
         <!-- xDrip+ panel -->
+        <span id="xdrip" style="display:block;height:0;visibility:hidden"></span>
         <div id="cfg-xdrip" class="source-panel instr-panel" role="tabpanel" hidden>
           <ol class="instr-steps">
             <li class="instr-step">
@@ -911,6 +927,7 @@
         </div>
 
         <!-- Spike panel -->
+        <span id="spike" style="display:block;height:0;visibility:hidden"></span>
         <div id="cfg-spike" class="source-panel instr-panel" role="tabpanel" hidden>
           <ol class="instr-steps">
             <li class="instr-step">
@@ -971,6 +988,99 @@
             <span><strong>Spike is iOS-only.</strong> If you're on Android, use xDrip+ or AAPS. Make sure <strong>Background App Refresh</strong> is enabled for Spike in iOS Settings so the HTTP server stays alive.</span>
           </div>
         </div>
+
+        <!-- Nightscout panel -->
+        <span id="nightscout" style="display:block;height:0;visibility:hidden"></span>
+        <div id="cfg-nightscout" class="source-panel instr-panel" role="tabpanel" hidden>
+          <ol class="instr-steps">
+            <li class="instr-step">
+              <span class="instr-step__num">1</span>
+              <div class="instr-step__body">
+                <h3 class="instr-step__title">Ensure your Nightscout site is running</h3>
+                <p class="instr-step__copy">
+                  You need a working Nightscout instance accessible over HTTPS — for example on Railway, Render, or your own server.
+                  If you haven't set one up yet, visit <a href="https://nightscout.github.io/nightscout/new_user/" target="_blank" rel="noreferrer" style="color:var(--accent)">nightscout.github.io</a>.
+                </p>
+              </div>
+            </li>
+            <li class="instr-step">
+              <span class="instr-step__num">2</span>
+              <div class="instr-step__body">
+                <h3 class="instr-step__title">Generate a read-only access token</h3>
+                <p class="instr-step__copy">
+                  If your Nightscout site has <strong>AUTH_DEFAULT_ROLES</strong> set to anything other than
+                  <code>readable</code> (i.e. it requires authentication), you'll need an access token.
+                  Skip to step 3 if your site is already publicly readable.
+                </p>
+                <p class="instr-step__copy" style="margin-top:.5rem">To create a token:</p>
+                <ol style="margin:.4rem 0 0 1.1rem;padding:0;font-size:.875rem;color:var(--muted);line-height:1.8;display:flex;flex-direction:column;gap:.1rem;">
+                  <li>Open your Nightscout site in a browser and go to <strong>Admin Tools</strong> (the lock icon in the top menu, or <code>https://yournightscout.com/admin/</code>).</li>
+                  <li>Log in with your API secret when prompted.</li>
+                  <li>Scroll down to <strong>Subjects — People, Devices, and Services</strong>.</li>
+                  <li>Click <strong>Add new subject</strong>.</li>
+                  <li>Enter a name, e.g. <code>loopface</code>.</li>
+                  <li>Set <strong>Roles</strong> to <code>readable</code> — this gives read-only access.</li>
+                  <li>Click <strong>Save</strong>. A token will appear in the row, e.g. <code>loopface-abc12345</code>.</li>
+                  <li>Copy that token — you'll append it to your URL in the next step.</li>
+                </ol>
+              </div>
+            </li>
+            <li class="instr-step">
+              <span class="instr-step__num">3</span>
+              <div class="instr-step__body">
+                <h3 class="instr-step__title">Build your Nightscout sgv.json URL</h3>
+                <p class="instr-step__copy">
+                  Replace <code>mynightscout</code> with your site's domain. If your site is public:
+                </p>
+                <div class="code-block" style="margin-top:.5rem">https://mynightscout.herokuapp.com/api/v1/entries/sgv.json?count=24</div>
+                <p class="instr-step__copy" style="margin-top:.6rem">
+                  If you created an access token in step 2, append it as a <code>token</code> parameter:
+                </p>
+                <div class="code-block" style="margin-top:.5rem">https://mynightscout.herokuapp.com/api/v1/entries/sgv.json?count=24&amp;token=loopface-abc12345</div>
+              </div>
+            </li>
+            <li class="instr-step">
+              <span class="instr-step__num">4</span>
+              <div class="instr-step__body">
+                <h3 class="instr-step__title">Open LoopFace settings in Garmin Connect</h3>
+                <p class="instr-step__copy">
+                  In the Garmin Connect app, go to <strong>My Device → Watch Faces → LoopFace → Settings</strong>.
+                </p>
+              </div>
+            </li>
+            <li class="instr-step">
+              <span class="instr-step__num">5</span>
+              <div class="instr-step__body">
+                <h3 class="instr-step__title">Select Nightscout and paste your URL</h3>
+                <p class="instr-step__copy">
+                  Set <strong>Data Source</strong> to <strong>Nightscout</strong>, then paste your full
+                  URL (including the token if required) into the <strong>Nightscout URL</strong> field.
+                </p>
+              </div>
+            </li>
+            <li class="instr-step">
+              <span class="instr-step__num">6</span>
+              <div class="instr-step__body">
+                <h3 class="instr-step__title">Save and sync to your watch</h3>
+                <p class="instr-step__copy">
+                  Tap Save. Settings will sync to the watch over Bluetooth within a few minutes.
+                </p>
+              </div>
+            </li>
+          </ol>
+          <div class="verify-block">
+            <div class="verify-block__label">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              Test your connection
+            </div>
+            <p class="verify-block__copy">Open your phone's browser and visit your Nightscout sgv.json URL. If you see a JSON array of glucose readings, your site is reachable and configured correctly.</p>
+            <div class="code-block">https://mynightscout.herokuapp.com/api/v1/entries/sgv.json?count=5</div>
+          </div>
+          <div class="callout callout--info" style="margin-top:1rem;margin-bottom:0">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <span><strong>IOB, COB and Basal Rate are not shown when using Nightscout</strong> — Nightscout's SGV endpoint does not carry pump data. The glucose reading, trend arrow, delta, and graph will all work normally. Your phone must have an active internet connection to reach your Nightscout site.</span>
+          </div>
+        </div>
       </section>
 
       <!-- ── Step 4: Verify on watch ──────────────────────────────────── -->
@@ -1001,7 +1111,7 @@
             <span class="instr-step__num">3</span>
             <div class="instr-step__body">
               <h3 class="instr-step__title">You should now see live glucose data</h3>
-              <p class="instr-step__copy">The watch face will show current glucose, trend arrow, delta, a background graph, and — for AAPS/Spike — IOB and COB.</p>
+              <p class="instr-step__copy">The watch face will show current glucose, trend arrow, delta, and a background graph. IOB and COB are shown for AAPS and Spike. Nightscout and xDrip+ do not provide pump data.</p>
             </div>
           </li>
         </ol>
@@ -1046,7 +1156,7 @@
           <div class="trouble-item">
             <p class="trouble-item__q">IOB / COB / Basal Rate not showing</p>
             <p class="trouble-item__a">
-              <strong>IOB and COB</strong> are available with AAPS and Spike. <strong>Basal Rate</strong> is AAPS-only. All three are hidden for xDrip+, which does not expose pump data.
+              <strong>IOB and COB</strong> are available with AAPS and Spike. <strong>Basal Rate</strong> is AAPS-only. All three are hidden for xDrip+ and Nightscout, which do not expose pump data.
               If you're using AAPS and still not seeing them, make sure the Garmin Plugin is
               enabled in AAPS Config Builder.
             </p>
@@ -1064,6 +1174,16 @@
               The Internal HTTP Server may not be running. Go to Spike → Settings → Integration
               and confirm the toggle is on. Also check that iOS Background App Refresh is enabled
               for Spike in your iPhone settings.
+            </p>
+          </div>
+          <div class="trouble-item">
+            <p class="trouble-item__q">Nightscout data is not loading on the watch</p>
+            <p class="trouble-item__a">
+              Make sure the <strong>Nightscout URL</strong> field in LoopFace settings contains your full
+              <code>sgv.json</code> URL including <code>https://</code>. Verify the URL returns data when
+              opened in your phone's browser. If your site requires authentication, append
+              <code>?token=YOUR_READ_TOKEN</code> to the URL. Also confirm your phone has an active
+              internet connection — unlike AAPS/xDrip+/Spike, Nightscout requires internet access.
             </p>
           </div>
         </div>
