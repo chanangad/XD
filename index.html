@@ -38,11 +38,11 @@
     "description": "A Garmin watch face for AndroidAPS and xDrip+ users: live glucose, trend, IOB/COB and a background graph.",
     "offers": {
       "@type": "Offer",
-      "price": "3.00",
+      "price": "2.00",
       "priceCurrency": "USD",
       "priceSpecification": {
         "@type": "PriceSpecification",
-        "minPrice": "3.00",
+        "minPrice": "2.00",
         "maxPrice": "7.99",
         "priceCurrency": "USD"
       }
@@ -100,7 +100,7 @@
           <div class="price-card__body">
             <div class="price-amounts">
               <div class="price-block">
-                <div class="price-card__amount">From&nbsp;$3</div>
+                <div class="price-card__amount">From&nbsp;$2</div>
                 <div class="price-card__region">Pay what you want</div>
               </div>
               <div class="price-divider"></div>
@@ -145,7 +145,7 @@
     <section class="panel" id="license">
       <h2 class="panel__title">Support to unlock</h2>
       <p class="page-copy panel__intro">
-        Enter the claim code shown on your watch, choose what you'd like to pay (anything from $3),
+        Enter the claim code shown on your watch, choose what you'd like to pay (anything from $2),
         and check out. Your unlock is tied to that code and syncs back to the watch within a few
         minutes &mdash; a one-time payment, never a subscription.
       </p>
@@ -200,8 +200,8 @@
               <div class="field">
                 <label for="unlock-amount-select">Support amount</label>
                 <select id="unlock-amount-select" name="amount-preset">
+                  <option value="2">$2</option>
                   <option value="3">$3</option>
-                  <option value="4">$4</option>
                   <option value="5" selected>$5</option>
                   <option value="7.5">$7.50</option>
                   <option value="10">$10</option>
@@ -213,11 +213,11 @@
                 <label for="unlock-amount-custom">Custom amount (USD)</label>
                 <div class="prefix-input">
                   <span class="prefix-input__prefix" aria-hidden="true">$</span>
-                  <input id="unlock-amount-custom" name="amount" type="number" inputmode="decimal" min="3" step="0.01" placeholder="3.00">
+                  <input id="unlock-amount-custom" name="amount" type="number" inputmode="decimal" min="2" step="0.01" placeholder="2.00">
                 </div>
               </div>
             </div>
-            <p class="hint-copy">Choose the amount you'd like to contribute &mdash; minimum $3.</p>
+            <p class="hint-copy">Choose the amount you'd like to contribute &mdash; minimum $2.</p>
           </form>
 
           <div class="payment-stack">
@@ -293,7 +293,7 @@
         </li>
         <li class="value-card">
           <h3 class="value-card__title">Pay what feels fair</h3>
-          <p class="value-card__copy">Pick any amount from $3. A little extra simply helps fund the next round of features and fixes.</p>
+          <p class="value-card__copy">Pick any amount from $2. A little extra simply helps fund the next round of features and fixes.</p>
         </li>
         <li class="value-card">
           <h3 class="value-card__title">Secure checkout</h3>
@@ -374,7 +374,7 @@
     claimCodeInput.addEventListener("input", () => syncClaimCode(claimCodeInput.value));
     restoreClaimCodeInput.addEventListener("input", () => syncClaimCode(restoreClaimCodeInput.value));
 
-    const MIN_AMOUNT_USD = 3;
+    const MIN_AMOUNT_USD = 2;
     const amountSelect = document.getElementById("unlock-amount-select");
     const amountCustomField = document.getElementById("unlock-amount-custom-field");
     const amountCustomInput = document.getElementById("unlock-amount-custom");
