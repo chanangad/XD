@@ -456,11 +456,25 @@ font[style*="background-color"] {
     width: auto;
 }
 
+.price-cards {
+    display: flex;
+    gap: 0.75rem;
+    align-items: stretch;
+    width: 100%;
+}
+
+.price-cards > * {
+    flex: 1 1 0;
+    min-width: 0;
+}
+
 .price-card {
     display: flex;
     flex-direction: column;
+    flex: 1;
     gap: 1.1rem;
     padding: 1.75rem 1.75rem;
+    height: 7rem;
     border-radius: 1.25rem;
     background:
         linear-gradient(135deg, rgba(255, 255, 255, 0.08), transparent 65%),
@@ -492,6 +506,12 @@ font[style*="background-color"] {
 
 .price-card__body {
     min-width: 0;
+    width: 100%;
+}
+
+.price-card--store .price-card__body {
+    display: flex;
+    flex-direction: column;
 }
 
 .price-card__eyebrow {
@@ -519,6 +539,32 @@ font[style*="background-color"] {
     font-weight: 800;
     line-height: 1.2;
     letter-spacing: -0.01em;
+}
+
+.price-card--store {
+    background: none;
+    box-shadow: none;
+    border: none;
+    padding: 0;
+    justify-content: center;
+    align-items: center;
+}
+
+.price-card--store:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+}
+
+.price-card__store-icon {
+    margin-bottom: 0.5rem;
+    color: var(--on-primary-muted);
+}
+
+.price-card__ciq-badge {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
 }
 
 .price-card__store-tag {
@@ -1357,6 +1403,9 @@ font[style*="background-color"] {
         align-items: flex-start;
     }
 
+    .price-cards {
+        flex-direction: column;
+    }
 
     .panel__tabs {
         width: 100%;
