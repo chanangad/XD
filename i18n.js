@@ -20,7 +20,14 @@ const LANGUAGES = [
   { code: "sv", label: "Svenska" },
   { code: "th", label: "ไทย" },
   { code: "zh-CN", label: "简体中文" },
-  { code: "zh-TW", label: "繁體中文" }
+  { code: "zh-TW", label: "繁體中文" },
+  { code: "el", label: "Ελληνικά" },
+  { code: "ru", label: "Русский" },
+  { code: "he", label: "עברית", translateCode: "iw" },
+  { code: "sk", label: "Slovenčina" },
+  { code: "sl", label: "Slovenščina" },
+  { code: "ms", label: "Bahasa Melayu" },
+  { code: "hr", label: "Hrvatski" }
 ];
 
 const STORAGE_KEY = "xdrip-lang";
