@@ -97,6 +97,17 @@ img {
     gap: 1.5rem;
 }
 
+.topbar__nav-link {
+    font-size: .875rem;
+    font-weight: 600;
+    color: var(--muted);
+    transition: color .15s;
+}
+.topbar__nav-link:hover,
+.topbar__nav-link--active {
+    color: var(--ink);
+}
+
 .topbar__lang {
     margin-left: auto;
     position: relative;

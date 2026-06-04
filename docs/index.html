@@ -1,0 +1,1141 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Setup Guide — LoopFace</title>
+  <meta name="description" content="Step-by-step instructions for connecting LoopFace to AndroidAPS, xDrip+ or Spike on your Garmin watch.">
+  <meta name="theme-color" content="#0f1715">
+  <link rel="canonical" href="https://loopface.app/docs/">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://loopface.app/docs/">
+  <meta property="og:site_name" content="LoopFace">
+  <meta property="og:title" content="Setup Guide — LoopFace">
+  <meta property="og:description" content="Step-by-step instructions for connecting LoopFace to AndroidAPS, xDrip+ or Spike on your Garmin watch. No internet required.">
+  <meta property="og:image" content="https://loopface.app/assets/hero.jpg">
+  <meta property="og:image:alt" content="LoopFace watch face on a Garmin watch">
+  <meta property="og:locale" content="en_US">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Setup Guide — LoopFace">
+  <meta name="twitter:description" content="Step-by-step instructions for connecting LoopFace to AndroidAPS, xDrip+ or Spike on your Garmin watch.">
+  <meta name="twitter:image" content="https://loopface.app/assets/hero.jpg">
+  <meta name="twitter:image:alt" content="LoopFace watch face on a Garmin watch">
+
+  <!-- Structured data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "xDrip+, AAPS & Spike — Installation & Setup",
+    "description": "Step-by-step instructions for connecting LoopFace to AndroidAPS, xDrip+ or Spike on your Garmin watch.",
+    "url": "https://loopface.app/docs/",
+    "inLanguage": "en-US",
+    "isPartOf": {
+      "@type": "WebSite",
+      "name": "LoopFace",
+      "url": "https://loopface.app/"
+    },
+    "author": {
+      "@type": "Person",
+      "name": "LoopFace"
+    }
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles.css">
+
+  <style>
+    /* ─── Layout shell ───────────────────────────────────────────────── */
+    .docs-layout {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      grid-template-rows: auto 1fr;
+      max-width: 1100px;
+      margin: 0 auto;
+      min-height: calc(100vh - 64px);
+    }
+
+    /* ─── Sidebar ─────────────────────────────────────────────────────── */
+    .docs-sidebar {
+      grid-row: 1 / 3;
+      padding: 2.5rem 0 3rem 1.75rem;
+      border-right: 1px solid var(--outline);
+      position: sticky;
+      top: 64px;
+      height: calc(100vh - 64px);
+      overflow-y: auto;
+    }
+    .sidebar__section {
+      margin-bottom: 2rem;
+    }
+    .sidebar__label {
+      font-size: .7rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 0 0 .5rem;
+      display: block;
+    }
+    .sidebar__links {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: .1rem;
+    }
+    .sidebar__link {
+      display: block;
+      font-size: .875rem;
+      color: var(--muted);
+      padding: .35rem .6rem;
+      border-radius: 6px;
+      transition: color .15s, background .15s;
+      line-height: 1.4;
+    }
+    .sidebar__link:hover { color: var(--ink); background: var(--surface-low); }
+    .sidebar__link.active { color: var(--accent); background: var(--primary-soft-bg); font-weight: 600; }
+
+    /* ─── Main content ────────────────────────────────────────────────── */
+    .docs-main {
+      padding: 2.5rem 2.5rem 5rem;
+      min-width: 0;
+    }
+
+    /* ─── Breadcrumb ──────────────────────────────────────────────────── */
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+      font-size: .8rem;
+      color: var(--muted);
+      margin-bottom: 1.75rem;
+    }
+    .breadcrumb a { color: var(--muted); transition: color .15s; }
+    .breadcrumb a:hover { color: var(--ink); }
+    .breadcrumb__sep { opacity: .4; }
+
+    /* ─── Page header ─────────────────────────────────────────────────── */
+    .docs-page-header {
+      margin-bottom: 2.5rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--outline);
+    }
+    .docs-eyebrow {
+      display: inline-block;
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--primary-soft-bg);
+      border: 1px solid var(--outline);
+      border-radius: 999px;
+      padding: .25rem .75rem;
+      margin-bottom: 1rem;
+    }
+    .docs-title {
+      font-size: clamp(1.5rem, 3.5vw, 2.1rem);
+      font-weight: 700;
+      line-height: 1.15;
+      margin: 0 0 .75rem;
+    }
+    .docs-subtitle {
+      font-size: .95rem;
+      color: var(--muted);
+      line-height: 1.65;
+      margin: 0;
+      max-width: 600px;
+    }
+
+    /* ─── Quick setup summary ─────────────────────────────────────────── */
+    .quick-setup {
+      background: var(--surface-low);
+      border: 1px solid var(--outline);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 3rem;
+    }
+    .quick-setup__label {
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1rem;
+      display: block;
+    }
+    .quick-steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+    }
+    .quick-step {
+      background: var(--surface);
+      border: 1px solid var(--outline);
+      border-radius: 8px;
+      padding: 1rem;
+    }
+    .quick-step__num {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: .5rem;
+    }
+    .quick-step__title {
+      font-size: .85rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin: 0 0 .35rem;
+    }
+    .quick-step__bullets {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      font-size: .8rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    .quick-step__bullets li::before {
+      content: "•  ";
+      color: var(--accent);
+    }
+    .quick-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .75rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--outline);
+      font-size: .8rem;
+      color: var(--muted);
+    }
+    .quick-meta span { display: flex; align-items: center; gap: .35rem; }
+
+    /* ─── Section headers ─────────────────────────────────────────────── */
+    .docs-section {
+      margin-bottom: 3rem;
+    }
+    .docs-section-header {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      margin-bottom: 1.5rem;
+    }
+    .docs-section-badge {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 2rem;
+      height: 2rem;
+      border-radius: 8px;
+      background: var(--primary-soft-bg);
+      border: 1px solid var(--outline);
+      font-size: .85rem;
+      font-weight: 700;
+      color: var(--accent);
+      flex-shrink: 0;
+    }
+    .docs-section-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin: 0;
+      color: var(--ink);
+    }
+    .docs-section-sub {
+      font-size: .875rem;
+      color: var(--muted);
+      line-height: 1.65;
+      margin: 0 0 1.5rem;
+    }
+
+    /* ─── App choice cards (Step 1) ───────────────────────────────────── */
+    .app-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: .75rem;
+      margin-bottom: 1rem;
+    }
+    .app-card {
+      background: var(--surface);
+      border: 1px solid var(--outline);
+      border-radius: 10px;
+      padding: 1rem;
+    }
+    .app-card__os {
+      font-size: .7rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: .4rem;
+    }
+    .app-card__name {
+      font-size: .95rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin: 0 0 .3rem;
+    }
+    .app-card__desc {
+      font-size: .8rem;
+      color: var(--muted);
+      line-height: 1.5;
+      margin: 0 0 .75rem;
+    }
+    .app-card__link {
+      display: inline-flex;
+      align-items: center;
+      gap: .3rem;
+      font-size: .78rem;
+      font-weight: 600;
+      color: var(--accent);
+      transition: opacity .15s;
+    }
+    .app-card__link:hover { opacity: .75; }
+
+    /* ─── Source picker tabs ──────────────────────────────────────────── */
+    .source-tabs {
+      display: flex;
+      gap: .4rem;
+      margin-bottom: 0;
+      border-bottom: 1px solid var(--outline);
+      flex-wrap: wrap;
+    }
+    .source-tab {
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      padding: .6rem 1.1rem;
+      font: inherit;
+      font-size: .875rem;
+      font-weight: 600;
+      color: var(--muted);
+      cursor: pointer;
+      transition: color .15s, border-color .15s;
+      border-radius: 4px 4px 0 0;
+    }
+    .source-tab:hover { color: var(--ink); }
+    .source-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+    .source-panel { display: none; }
+    .source-panel.active { display: block; }
+
+    /* ─── Instruction steps ───────────────────────────────────────────── */
+    .instr-panel {
+      background: var(--surface-low);
+      border: 1px solid var(--outline);
+      border-top: none;
+      border-radius: 0 0 10px 10px;
+      padding: 1.75rem;
+      margin-bottom: 1.5rem;
+    }
+    .instr-steps {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      counter-reset: step;
+    }
+    .instr-step {
+      display: grid;
+      grid-template-columns: 2.25rem 1fr;
+      gap: 0 .9rem;
+      padding-bottom: 1.5rem;
+      position: relative;
+    }
+    .instr-step:not(:last-child)::before {
+      content: "";
+      position: absolute;
+      left: 1.1rem;
+      top: 2.25rem;
+      bottom: 0;
+      width: 1px;
+      background: var(--outline);
+    }
+    .instr-step__num {
+      width: 2.25rem;
+      height: 2.25rem;
+      border-radius: 50%;
+      background: var(--surface-high);
+      border: 1px solid var(--outline);
+      color: var(--accent);
+      font-size: .8rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 1;
+    }
+    .instr-step__body { padding-top: .3rem; min-width: 0; }
+    .instr-step__title {
+      font-size: .95rem;
+      font-weight: 700;
+      margin: 0 0 .4rem;
+      color: var(--ink);
+    }
+    .instr-step__copy {
+      font-size: .875rem;
+      line-height: 1.65;
+      color: var(--muted);
+      margin: 0;
+    }
+    .instr-step__copy + .instr-step__copy { margin-top: .4rem; }
+
+    /* ─── Screenshot placeholder ──────────────────────────────────────── */
+    .screenshot-slot {
+      width: 100%;
+      aspect-ratio: 16 / 7;
+      border-radius: 8px;
+      background: var(--surface);
+      border: 1px dashed var(--outline);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: .4rem;
+      margin-top: .75rem;
+      color: var(--muted);
+      font-size: .78rem;
+    }
+    .screenshot-slot svg { opacity: .4; }
+
+    /* ─── Verify / test block ─────────────────────────────────────────── */
+    .verify-block {
+      background: var(--surface);
+      border: 1px solid var(--outline);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      margin-top: .75rem;
+    }
+    .verify-block__label {
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--ok);
+      margin-bottom: .5rem;
+      display: flex;
+      align-items: center;
+      gap: .35rem;
+    }
+    .verify-block__title {
+      font-size: .875rem;
+      font-weight: 600;
+      color: var(--ink);
+      margin: 0 0 .35rem;
+    }
+    .verify-block__copy {
+      font-size: .825rem;
+      color: var(--muted);
+      margin: 0 0 .6rem;
+      line-height: 1.6;
+    }
+    .code-block {
+      background: var(--surface-lowest);
+      border: 1px solid var(--outline);
+      border-radius: 6px;
+      padding: .65rem 1rem;
+      font-family: ui-monospace, "Cascadia Code", "Fira Mono", monospace;
+      font-size: .8rem;
+      color: var(--accent);
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+
+    /* ─── Callout / note ──────────────────────────────────────────────── */
+    .callout {
+      display: flex;
+      gap: .75rem;
+      align-items: flex-start;
+      border-radius: 8px;
+      padding: .85rem 1.1rem;
+      font-size: .85rem;
+      line-height: 1.65;
+      margin-bottom: 1rem;
+    }
+    .callout--info {
+      background: var(--primary-soft-bg);
+      border: 1px solid var(--outline);
+      border-left: 3px solid var(--accent);
+      color: var(--muted);
+    }
+    .callout--warn {
+      background: rgba(245, 200, 66, 0.08);
+      border: 1px solid rgba(245, 200, 66, 0.25);
+      border-left: 3px solid var(--warn);
+      color: var(--muted);
+    }
+    .callout--danger {
+      background: rgba(240, 144, 144, 0.08);
+      border: 1px solid rgba(240, 144, 144, 0.25);
+      border-left: 3px solid var(--alert);
+      color: var(--muted);
+    }
+    .callout svg { flex-shrink: 0; margin-top: .1rem; }
+    .callout--info svg { color: var(--accent); }
+    .callout--warn svg { color: var(--warn); }
+    .callout--danger svg { color: var(--alert); }
+    .callout strong { color: var(--ink); }
+
+    /* ─── Inline code ─────────────────────────────────────────────────── */
+    code {
+      font-family: ui-monospace, "Cascadia Code", "Fira Mono", monospace;
+      font-size: .82em;
+      background: var(--surface-high);
+      border: 1px solid var(--outline);
+      border-radius: 4px;
+      padding: .1em .4em;
+      color: var(--accent);
+      white-space: nowrap;
+    }
+
+    /* ─── Troubleshooting table ───────────────────────────────────────── */
+    .trouble-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      border: 1px solid var(--outline);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .trouble-item {
+      background: var(--surface-low);
+      padding: 1rem 1.25rem;
+    }
+    .trouble-item + .trouble-item { border-top: 1px solid var(--outline); }
+    .trouble-item__q {
+      font-size: .9rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin: 0 0 .4rem;
+      display: flex;
+      align-items: flex-start;
+      gap: .5rem;
+    }
+    .trouble-item__q::before {
+      content: "?";
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.4rem;
+      height: 1.4rem;
+      border-radius: 50%;
+      background: rgba(245,200,66,.12);
+      color: var(--warn);
+      font-size: .7rem;
+      font-weight: 800;
+      flex-shrink: 0;
+      margin-top: .05rem;
+    }
+    .trouble-item__a {
+      font-size: .85rem;
+      color: var(--muted);
+      line-height: 1.65;
+      margin: 0;
+      padding-left: 1.9rem;
+    }
+
+    /* ─── Disclaimer ──────────────────────────────────────────────────── */
+    .disclaimer {
+      background: var(--surface-low);
+      border: 1px solid var(--outline);
+      border-radius: 10px;
+      padding: 1.25rem 1.5rem;
+      font-size: .8rem;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+    .disclaimer__title {
+      font-size: .75rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--alert);
+      margin-bottom: .75rem;
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+    }
+    .disclaimer ul {
+      margin: 0;
+      padding-left: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: .3rem;
+    }
+
+    /* ─── Section divider ─────────────────────────────────────────────── */
+    .section-rule {
+      border: none;
+      border-top: 1px solid var(--outline);
+      margin: 2.5rem 0;
+    }
+
+    /* ─── Responsive ──────────────────────────────────────────────────── */
+    @media (max-width: 780px) {
+      .docs-layout { grid-template-columns: 1fr; }
+      .docs-sidebar { display: none; }
+      .docs-main { padding: 1.5rem 1.25rem 4rem; }
+      .quick-steps { grid-template-columns: 1fr; }
+      .app-cards { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 520px) {
+      .instr-step { grid-template-columns: 2rem 1fr; gap: 0 .6rem; }
+      .instr-step__num { width: 2rem; height: 2rem; font-size: .72rem; }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="topbar">
+    <a href="../" class="topbar__brand notranslate" translate="no">LoopFace</a>
+    <nav class="topbar__nav">
+      <a href="../docs/" class="topbar__nav-link topbar__nav-link--active">Setup Guide</a>
+    </nav>
+    <div class="topbar__lang" data-lang-picker></div>
+  </header>
+
+  <div class="docs-layout">
+
+    <!-- ── Sidebar ───────────────────────────────────────────────────── -->
+    <aside class="docs-sidebar" aria-label="Documentation navigation">
+      <div class="sidebar__section">
+        <span class="sidebar__label">Getting started</span>
+        <ul class="sidebar__links">
+          <li><a href="#intro" class="sidebar__link active">Introduction</a></li>
+          <li><a href="#step1" class="sidebar__link">Step 1 — Install apps</a></li>
+          <li><a href="#step2" class="sidebar__link">Step 2 — Install LoopFace</a></li>
+          <li><a href="#step3" class="sidebar__link">Step 3 — Configure data source</a></li>
+          <li><a href="#step4" class="sidebar__link">Step 4 — Verify connection</a></li>
+        </ul>
+      </div>
+      <div class="sidebar__section">
+        <span class="sidebar__label">Data sources</span>
+        <ul class="sidebar__links">
+          <li><a href="#aaps" class="sidebar__link">AndroidAPS</a></li>
+          <li><a href="#xdrip" class="sidebar__link">xDrip+</a></li>
+          <li><a href="#spike" class="sidebar__link">Spike (iOS)</a></li>
+        </ul>
+      </div>
+      <div class="sidebar__section">
+        <span class="sidebar__label">Help</span>
+        <ul class="sidebar__links">
+          <li><a href="#troubleshooting" class="sidebar__link">Troubleshooting</a></li>
+          <li><a href="#disclaimer" class="sidebar__link">Disclaimer</a></li>
+        </ul>
+      </div>
+    </aside>
+
+    <!-- ── Main ──────────────────────────────────────────────────────── -->
+    <main class="docs-main">
+
+      <!-- Breadcrumb -->
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="../">LoopFace</a>
+        <span class="breadcrumb__sep">›</span>
+        <span>Documentation</span>
+        <span class="breadcrumb__sep">›</span>
+        <span>xDrip+, AAPS &amp; Spike — Setup</span>
+      </nav>
+
+      <!-- Page header -->
+      <header class="docs-page-header" id="intro">
+        <span class="docs-eyebrow">Documentation</span>
+        <h1 class="docs-title">xDrip+, AAPS &amp; Spike — Installation &amp; Setup</h1>
+        <p class="docs-subtitle">
+          Connect your CGM data directly from your phone to your Garmin watch using
+          xDrip+ (Android), AAPS (Android), or Spike (iOS).
+          No internet connection required — data flows locally over Bluetooth.
+        </p>
+      </header>
+
+      <!-- ── Quick setup summary ──────────────────────────────────────── -->
+      <div class="quick-setup">
+        <span class="quick-setup__label">⚡ Quick Setup Guide</span>
+        <div class="quick-steps">
+          <div class="quick-step">
+            <div class="quick-step__num">1</div>
+            <div class="quick-step__title">Install Companion App</div>
+            <ul class="quick-step__bullets">
+              <li>Install xDrip+ (Android)</li>
+              <li>Or AAPS (Android)</li>
+              <li>Or Spike (iOS)</li>
+            </ul>
+          </div>
+          <div class="quick-step">
+            <div class="quick-step__num">2</div>
+            <div class="quick-step__title">Install LoopFace</div>
+            <ul class="quick-step__bullets">
+              <li>Open Garmin Connect app</li>
+              <li>Find LoopFace in Connect IQ</li>
+              <li>Download &amp; sync to watch</li>
+            </ul>
+          </div>
+          <div class="quick-step">
+            <div class="quick-step__num">3</div>
+            <div class="quick-step__title">Enable &amp; Select</div>
+            <ul class="quick-step__bullets">
+              <li>Enable web server in your app</li>
+              <li>Select your app in LoopFace settings</li>
+              <li>Data syncs automatically</li>
+            </ul>
+          </div>
+        </div>
+        <div class="quick-meta">
+          <span>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            Total time: 5–10 minutes
+          </span>
+          <span>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 6l4 4 4-4"/><path d="M5 10V3"/><path d="M23 18l-4-4-4 4"/><path d="M19 14v7"/></svg>
+            No internet required
+          </span>
+          <span>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+            Detailed steps below
+          </span>
+        </div>
+      </div>
+
+      <!-- ── Step 1: Install companion app ───────────────────────────── -->
+      <section class="docs-section" id="step1">
+        <div class="docs-section-header">
+          <span class="docs-section-badge">1</span>
+          <h2 class="docs-section-title">Install the Companion App on Your Phone</h2>
+        </div>
+        <p class="docs-section-sub">
+          First, install one of the compatible apps on your phone. Choose based on your device and preferences:
+        </p>
+
+        <div class="app-cards">
+          <div class="app-card">
+            <div class="app-card__os">Android</div>
+            <div class="app-card__name">xDrip+</div>
+            <p class="app-card__desc">Popular open-source CGM app. Shows glucose from Dexcom, Libre, and other sensors.</p>
+            <a href="https://github.com/NightscoutFoundation/xDrip/releases" target="_blank" rel="noreferrer" class="app-card__link">
+              Download from GitHub
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            </a>
+          </div>
+          <div class="app-card">
+            <div class="app-card__os">Android</div>
+            <div class="app-card__name">AndroidAPS</div>
+            <p class="app-card__desc">Advanced diabetes management with closed-loop support. Provides IOB, COB and basal rate.</p>
+            <a href="https://github.com/nightscout/AndroidAPS/releases" target="_blank" rel="noreferrer" class="app-card__link">
+              Download from GitHub
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            </a>
+          </div>
+          <div class="app-card">
+            <div class="app-card__os">iOS only</div>
+            <div class="app-card__name">Spike</div>
+            <p class="app-card__desc">CGM app for iPhone. Works with Dexcom, Libre and Nightscout followers. Shows IOB and COB.</p>
+            <a href="https://spike-app.com" target="_blank" rel="noreferrer" class="app-card__link">
+              spike-app.com
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="callout callout--info">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <span>These apps are not available in app stores. Download them from the links above and follow each app's own installation guide carefully.</span>
+        </div>
+      </section>
+
+      <!-- ── Step 2: Install LoopFace ─────────────────────────────────── -->
+      <section class="docs-section" id="step2">
+        <div class="docs-section-header">
+          <span class="docs-section-badge">2</span>
+          <h2 class="docs-section-title">Install LoopFace on Your Garmin Watch</h2>
+        </div>
+        <ol class="instr-steps">
+          <li class="instr-step">
+            <span class="instr-step__num">1</span>
+            <div class="instr-step__body">
+              <h3 class="instr-step__title">Open Garmin Connect on your phone</h3>
+              <p class="instr-step__copy">Make sure your watch is paired and Bluetooth is on.</p>
+            </div>
+          </li>
+          <li class="instr-step">
+            <span class="instr-step__num">2</span>
+            <div class="instr-step__body">
+              <h3 class="instr-step__title">Browse to the Connect IQ Store</h3>
+              <p class="instr-step__copy">
+                In Garmin Connect, tap <strong>More → Connect IQ Store</strong>, or visit
+                <a href="https://apps.garmin.com/apps/df1d472a-ffc8-4890-8820-12cee16da2db" target="_blank" rel="noreferrer" style="color:var(--accent)">apps.garmin.com</a>
+                and search for <strong>LoopFace</strong>.
+              </p>
+              <img src="./playstore.jpeg" alt="LoopFace on the Connect IQ Store" style="width:260px;max-width:100%;border-radius:8px;border:1px solid var(--outline);margin-top:.75rem;display:block;">
+            </div>
+          </li>
+          <li class="instr-step">
+            <span class="instr-step__num">3</span>
+            <div class="instr-step__body">
+              <h3 class="instr-step__title">Tap Download</h3>
+              <p class="instr-step__copy">The watch face will sync to your watch automatically within a few minutes.</p>
+            </div>
+          </li>
+          <li class="instr-step">
+            <span class="instr-step__num">4</span>
+            <div class="instr-step__body">
+              <h3 class="instr-step__title">Set LoopFace as your active watch face</h3>
+              <p class="instr-step__copy">
+                On the watch, hold the button to open the watch face picker and select LoopFace.
+                Or in Garmin Connect, go to <strong>My Device → Watch Face</strong>.
+              </p>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <!-- ── Step 3: Configure data source ───────────────────────────── -->
+      <section class="docs-section" id="step3">
+        <div class="docs-section-header">
+          <span class="docs-section-badge">3</span>
+          <h2 class="docs-section-title">Configure Your Companion App</h2>
+        </div>
+        <p class="docs-section-sub">
+          Enable the local web server in your app so LoopFace can retrieve glucose data.
+          Select the tab for your app:
+        </p>
+
+        <!-- Tabs -->
+        <div class="source-tabs" role="tablist" aria-label="App setup guides">
+          <button class="source-tab active" data-panel="aaps" role="tab" aria-selected="true" aria-controls="cfg-aaps">AndroidAPS</button>
+          <button class="source-tab" data-panel="xdrip" role="tab" aria-selected="false" aria-controls="cfg-xdrip">xDrip+</button>
+          <button class="source-tab" data-panel="spike" role="tab" aria-selected="false" aria-controls="cfg-spike">Spike (iOS)</button>
+        </div>
+
+        <!-- AAPS panel -->
+        <div id="cfg-aaps" class="source-panel instr-panel active" role="tabpanel">
+          <ol class="instr-steps">
+            <li class="instr-step">
+              <span class="instr-step__num">1</span>
+              <div class="instr-step__body">
+                <h3 class="instr-step__title">Open AndroidAPS</h3>
+                <p class="instr-step__copy">Make sure you're running AAPS version 3.2.0.4 or newer.</p>
+              </div>
+            </li>
+            <li class="instr-step">
+              <span class="instr-step__num">2</span>
+              <div class="instr-step__body">
+                <h3 class="instr-step__title">Enable the Garmin plugin</h3>
+                <p class="instr-step__copy">
+                  Go to <strong>Config Builder → Synchronization</strong> and enable the
+                  <strong>Garmin Plugin</strong>. This activates the local HTTP server on port <code>28891</code>.
+                </p>
+                <img src="./aaps.jpeg" alt="AndroidAPS Config Builder — enable Garmin Plugin" style="width:260px;max-width:100%;border-radius:8px;border:1px solid var(--outline);margin-top:.75rem;display:block;">
+              </div>
+            </li>
+            <li class="instr-step">
+              <span class="instr-step__num">3</span>
+              <div class="instr-step__body">
+                <h3 class="instr-step__title">Select AAPS in LoopFace settings</h3>
+                <p class="instr-step__copy">
+                  In <strong>Garmin Connect → My Device → Watch Faces → LoopFace → Settings</strong>,
+                  set <strong>Data Source</strong> to <strong>AAPS</strong> (this is the default).
+                  Leave the "Request Key" field blank.
+                </p>
+              </div>
+            </li>
+          </ol>
+          <div class="verify-block">
+            <div class="verify-block__label">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              Test your connection
+            </div>
+            <p class="verify-block__copy">Open your phone's browser and visit this URL. If you see JSON data with glucose values, AAPS is configured correctly.</p>
+            <div class="code-block">http://127.0.0.1:28891/sgv.json?count=12&amp;brief_mode=true</div>
+          </div>
+          <div class="callout callout--info" style="margin-top:1rem;margin-bottom:0">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <span><strong>IOB and COB</strong> are available with AAPS and Spike. <strong>Basal Rate</strong> is only available with AAPS. All three are hidden when using xDrip+, which does not expose pump data.</span>
+          </div>
+        </div>
+
+        <!-- xDrip+ panel -->
+        <div id="cfg-xdrip" class="source-panel instr-panel" role="tabpanel" hidden>
+          <ol class="instr-steps">
+            <li class="instr-step">
+              <span class="instr-step__num">1</span>
+              <div class="instr-step__body">
+                <h3 class="instr-step__title">Open xDrip+ on your Android phone</h3>
+              </div>
+            </li>
+            <li class="instr-step">
+              <span class="instr-step__num">2</span>
+              <div class="instr-step__body">
+                <h3 class="instr-step__title">Enable the xDrip Web Server</h3>
+                <p class="instr-step__copy">
+                  Go to <strong>Settings → Inter-App Settings</strong> and enable
+                  <strong>xDrip Web-Server</strong>. This starts the local HTTP server on port <code>17580</code>.
+                </p>
+                <img src="./xdrip-web-server.jpeg" alt="xDrip+ Inter-App Settings — enable xDrip Web-Server" style="width:260px;max-width:100%;border-radius:8px;border:1px solid var(--outline);margin-top:.75rem;display:block;">
+              </div>
+            </li>
+            <li class="instr-step">
+              <span class="instr-step__num">3</span>
+              <div class="instr-step__body">
+                <h3 class="instr-step__title">Select xDrip+ in LoopFace settings</h3>
+                <p class="instr-step__copy">
+                  In <strong>Garmin Connect → LoopFace → Settings → Data Source</strong>,
+                  select <strong>xDrip+</strong>.
+                </p>
+              </div>
+            </li>
+          </ol>
+          <div class="verify-block">
+            <div class="verify-block__label">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              Test your connection
+            </div>
+            <p class="verify-block__copy">Open your phone's browser and visit this URL. You should see JSON glucose data if the web server is running.</p>
+            <div class="code-block">http://127.0.0.1:17580/sgv.json?count=12</div>
+          </div>
+        </div>
+
+        <!-- Spike panel -->
+        <div id="cfg-spike" class="source-panel instr-panel" role="tabpanel" hidden>
+          <ol class="instr-steps">
+            <li class="instr-step">
+              <span class="instr-step__num">1</span>
+              <div class="instr-step__body">
+                <h3 class="instr-step__title">Open Spike on your iPhone</h3>
+              </div>
+            </li>
+            <li class="instr-step">
+              <span class="instr-step__num">2</span>
+              <div class="instr-step__body">
+                <h3 class="instr-step__title">Enable the Internal HTTP Server</h3>
+                <p class="instr-step__copy">
+                  Go to <strong>Settings → Integration</strong> and enable
+                  <strong>Internal HTTP Server</strong>. This starts a local server on port <code>1979</code>
+                  that LoopFace reads from.
+                </p>
+              </div>
+            </li>
+            <li class="instr-step">
+              <span class="instr-step__num">3</span>
+              <div class="instr-step__body">
+                <h3 class="instr-step__title">Open LoopFace settings in Garmin Connect</h3>
+                <p class="instr-step__copy">
+                  In the Garmin Connect app, go to <strong>My Device → Watch Faces → LoopFace → Settings</strong>.
+                </p>
+              </div>
+            </li>
+            <li class="instr-step">
+              <span class="instr-step__num">4</span>
+              <div class="instr-step__body">
+                <h3 class="instr-step__title">Select Spike as your data source</h3>
+                <p class="instr-step__copy">
+                  Under <strong>Data Source</strong>, select <strong>Spike (iOS only)</strong>.
+                </p>
+              </div>
+            </li>
+            <li class="instr-step">
+              <span class="instr-step__num">5</span>
+              <div class="instr-step__body">
+                <h3 class="instr-step__title">Save and sync to your watch</h3>
+                <p class="instr-step__copy">
+                  Tap Save. Settings will sync to the watch automatically over Bluetooth within a few minutes.
+                </p>
+              </div>
+            </li>
+          </ol>
+          <div class="verify-block">
+            <div class="verify-block__label">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              Test your connection
+            </div>
+            <p class="verify-block__copy">Open Safari on your iPhone and visit this URL. If you see JSON glucose data, Spike is set up correctly.</p>
+            <div class="code-block">http://127.0.0.1:1979/sgv.json?count=5</div>
+          </div>
+          <div class="callout callout--info" style="margin-top:1rem;margin-bottom:0">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <span><strong>Spike is iOS-only.</strong> If you're on Android, use xDrip+ or AAPS. Make sure <strong>Background App Refresh</strong> is enabled for Spike in iOS Settings so the HTTP server stays alive.</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Step 4: Verify on watch ──────────────────────────────────── -->
+      <section class="docs-section" id="step4">
+        <div class="docs-section-header">
+          <span class="docs-section-badge">4</span>
+          <h2 class="docs-section-title">Verify Data on Your Watch</h2>
+        </div>
+        <p class="docs-section-sub">
+          Once your companion app is configured, data will start flowing to your watch automatically.
+        </p>
+        <ol class="instr-steps">
+          <li class="instr-step">
+            <span class="instr-step__num">1</span>
+            <div class="instr-step__body">
+              <h3 class="instr-step__title">Keep your phone nearby with Bluetooth on</h3>
+              <p class="instr-step__copy">LoopFace fetches data through Garmin Connect every ~5 minutes. The phone must be in range.</p>
+            </div>
+          </li>
+          <li class="instr-step">
+            <span class="instr-step__num">2</span>
+            <div class="instr-step__body">
+              <h3 class="instr-step__title">Wait for the first refresh</h3>
+              <p class="instr-step__copy">Due to Garmin SDK limitations, data updates run on a ~5-minute cycle. Give it up to 5 minutes after setup before expecting readings to appear.</p>
+            </div>
+          </li>
+          <li class="instr-step">
+            <span class="instr-step__num">3</span>
+            <div class="instr-step__body">
+              <h3 class="instr-step__title">You should now see live glucose data</h3>
+              <p class="instr-step__copy">The watch face will show current glucose, trend arrow, delta, a background graph, and — for AAPS/Spike — IOB and COB.</p>
+            </div>
+          </li>
+        </ol>
+      </section>
+
+      <hr class="section-rule">
+
+      <!-- ── Troubleshooting ──────────────────────────────────────────── -->
+      <section class="docs-section" id="troubleshooting">
+        <div class="docs-section-header">
+          <span class="docs-section-badge" style="background:rgba(245,200,66,.12);border-color:rgba(245,200,66,.3);color:var(--warn)">?</span>
+          <h2 class="docs-section-title">Troubleshooting</h2>
+        </div>
+
+        <div class="trouble-list">
+          <div class="trouble-item">
+            <p class="trouble-item__q">Data is not updating on the watch</p>
+            <p class="trouble-item__a">
+              Check that the web server is enabled in your companion app. Verify your watch is connected
+              to your phone via Bluetooth and that Garmin Connect is running (it can be in the background).
+              Make sure you selected the correct Data Source in LoopFace settings. Wait at least 5 minutes
+              — updates are limited to every 5 minutes by the Garmin SDK.
+            </p>
+          </div>
+          <div class="trouble-item">
+            <p class="trouble-item__q">The watch shows "HTTP 400" or "Invalid Format"</p>
+            <p class="trouble-item__a">
+              The selected data source doesn't match what's running on your phone. Double-check your
+              Data Source setting in LoopFace matches the app you configured (AAPS, xDrip+, or Spike).
+              Restart both your companion app and Garmin Connect.
+            </p>
+          </div>
+          <div class="trouble-item">
+            <p class="trouble-item__q">Data stops after a few hours</p>
+            <p class="trouble-item__a">
+              Your phone's battery optimisation is killing the companion app. Disable battery
+              optimisation for both your companion app and Garmin Connect. Visit
+              <a href="https://dontkillmyapp.com" target="_blank" rel="noreferrer" style="color:var(--accent)">dontkillmyapp.com</a>
+              for device-specific instructions.
+            </p>
+          </div>
+          <div class="trouble-item">
+            <p class="trouble-item__q">IOB / COB / Basal Rate not showing</p>
+            <p class="trouble-item__a">
+              <strong>IOB and COB</strong> are available with AAPS and Spike. <strong>Basal Rate</strong> is AAPS-only. All three are hidden for xDrip+, which does not expose pump data.
+              If you're using AAPS and still not seeing them, make sure the Garmin Plugin is
+              enabled in AAPS Config Builder.
+            </p>
+          </div>
+          <div class="trouble-item">
+            <p class="trouble-item__q">xDrip+ web server test URL returns nothing</p>
+            <p class="trouble-item__a">
+              Make sure you enabled <strong>xDrip Web-Server</strong> (not "Open Web Server") under
+              Settings → Inter-App Settings. After enabling, restart xDrip+ and try the URL again.
+            </p>
+          </div>
+          <div class="trouble-item">
+            <p class="trouble-item__q">Spike test URL returns nothing on Safari</p>
+            <p class="trouble-item__a">
+              The Internal HTTP Server may not be running. Go to Spike → Settings → Integration
+              and confirm the toggle is on. Also check that iOS Background App Refresh is enabled
+              for Spike in your iPhone settings.
+            </p>
+          </div>
+        </div>
+
+        <div class="callout callout--info" style="margin-top:1.5rem">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span>Still stuck? Email <a href="mailto:chanangadhere@gmail.com?subject=LoopFace%20setup%20help" style="color:var(--accent)">chanangadhere@gmail.com</a> and I'll help you get it sorted.</span>
+        </div>
+      </section>
+
+      <hr class="section-rule">
+
+      <!-- ── Disclaimer ───────────────────────────────────────────────── -->
+      <section class="docs-section" id="disclaimer">
+        <div class="disclaimer">
+          <div class="disclaimer__title">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            Important Disclaimer
+          </div>
+          <ul>
+            <li><strong>NOT FOR MEDICAL DECISIONS.</strong> This app is for informational purposes only and should not be used to make medical decisions.</li>
+            <li><strong>Always verify readings</strong> with your official CGM receiver or app before taking action.</li>
+            <li><strong>Delayed data.</strong> Readings may be delayed by several minutes due to how often the watch can sync.</li>
+            <li><strong>Emergency situations.</strong> In case of extreme glucose levels or medical emergencies, use your primary CGM device.</li>
+            <li><strong>No liability.</strong> The developer assumes no responsibility for health outcomes related to the use of this app.</li>
+          </ul>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script>
+    // Tab switching
+    const tabs = Array.from(document.querySelectorAll(".source-tab"));
+    const panels = {};
+    tabs.forEach(t => { panels[t.dataset.panel] = document.getElementById("cfg-" + t.dataset.panel); });
+
+    function activateTab(name) {
+      tabs.forEach(t => {
+        const active = t.dataset.panel === name;
+        t.classList.toggle("active", active);
+        t.setAttribute("aria-selected", active ? "true" : "false");
+      });
+      Object.entries(panels).forEach(([key, panel]) => {
+        const active = key === name;
+        panel.classList.toggle("active", active);
+        panel.hidden = !active;
+      });
+      const params = new URLSearchParams(window.location.search);
+      params.set("source", name);
+      history.replaceState({}, "", location.pathname + "?" + params.toString());
+    }
+
+    tabs.forEach(t => t.addEventListener("click", () => activateTab(t.dataset.panel)));
+
+    const initial = new URLSearchParams(location.search).get("source");
+    if (initial && panels[initial]) activateTab(initial);
+
+    // Sidebar active link on scroll
+    const sections = ["intro","step1","step2","step3","step4","aaps","xdrip","spike","troubleshooting","disclaimer"];
+    const sideLinks = document.querySelectorAll(".sidebar__link");
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          sideLinks.forEach(l => l.classList.toggle("active", l.getAttribute("href") === "#" + e.target.id));
+        }
+      });
+    }, { rootMargin: "-30% 0px -60% 0px" });
+    sections.forEach(id => { const el = document.getElementById(id); if (el) observer.observe(el); });
+  </script>
+  <script src="../i18n.js"></script>
+</body>
+
+</html>
