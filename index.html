@@ -38,11 +38,11 @@
     "description": "A Garmin watch face for AndroidAPS and xDrip+ users: live glucose, trend, IOB/COB and a background graph.",
     "offers": {
       "@type": "Offer",
-      "price": "2.00",
+      "price": "1.00",
       "priceCurrency": "USD",
       "priceSpecification": {
         "@type": "PriceSpecification",
-        "minPrice": "2.00",
+        "minPrice": "1.00",
         "maxPrice": "7.99",
         "priceCurrency": "USD"
       }
@@ -60,9 +60,7 @@
 <body>
   <header class="topbar">
     <a href="./" class="topbar__brand notranslate" translate="no">XDRIP+/AAPS</a>
-    <nav class="topbar__nav">
-      <a href="./" class="topbar__tab topbar__tab--active">Support</a>
-    </nav>
+
     <div class="topbar__lang" data-lang-picker></div>
   </header>
 
@@ -81,33 +79,23 @@
           <span>right where you glance</span>
         </h1>
         <p class="hero__copy">
-          A clean Garmin watch face built for the Type 1 community — live glucose with
-          trend arrow, delta, IOB/COB, a subtle background graph and data-freshness, all
-          around a time-first design. Works with AndroidAPS and xDrip+.
+          Built by a T1D, for the T1D community worldwide. Live glucose, trend arrow,
+          delta, IOB/COB and a background graph — all around a time-first design.
+          Works with AndroidAPS and xDrip+.
         </p>
 
-        <div class="hero__cta">
-          <a class="btn btn--primary" href="#license">Support &amp; unlock</a>
-          <a class="btn btn--ghost" href="#how">See how it works</a>
-        </div>
 
         <a class="price-card" href="https://apps.garmin.com/apps/df1d472a-ffc8-4890-8820-12cee16da2db" target="_blank" rel="noreferrer" aria-label="Get the watch face on the Connect IQ store">
-          <div class="price-card__top">
-            <span class="connect-iq-badge connect-iq-badge--in-card">
-              <img src="./assets/connect-iq-badge-white.svg" alt="Available on Connect IQ" width="278" height="95">
-            </span>
-          </div>
           <div class="price-card__body">
-            <div class="price-amounts">
-              <div class="price-block">
-                <div class="price-card__amount">From&nbsp;$2</div>
-                <div class="price-card__region">Pay what you want</div>
-              </div>
-              <div class="price-divider"></div>
-              <div class="price-block">
-                <div class="price-card__amount price-card__amount--inr">$5</div>
-                <div class="price-card__region price-card__region--inr">Most pick this</div>
-              </div>
+            <div class="price-card__pwyw">Support the project</div>
+            <div class="price-card__region">Pay what you feel it&rsquo;s worth</div>
+            <div class="price-card__store-tag">
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" width="11" height="11">
+                <path d="M7 3H3a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h9a1 1 0 0 0 1-1V9"/>
+                <path d="M9 1h5v5"/>
+                <path d="M15 1 8 8"/>
+              </svg>
+              Available on Connect IQ Store
             </div>
           </div>
         </a>
@@ -145,7 +133,7 @@
     <section class="panel" id="license">
       <h2 class="panel__title">Support to unlock</h2>
       <p class="page-copy panel__intro">
-        Enter the claim code shown on your watch, choose what you'd like to pay (anything from $2),
+        Enter the claim code shown on your watch, pay whatever feels fair to you,
         and check out. Your unlock is tied to that code and syncs back to the watch within a few
         minutes &mdash; a one-time payment, never a subscription.
       </p>
@@ -200,7 +188,7 @@
               <div class="field">
                 <label for="unlock-amount-select">Support amount</label>
                 <select id="unlock-amount-select" name="amount-preset">
-                  <option value="2">$2</option>
+                  <option value="1">$1</option>
                   <option value="3">$3</option>
                   <option value="5" selected>$5</option>
                   <option value="7.5">$7.50</option>
@@ -213,11 +201,11 @@
                 <label for="unlock-amount-custom">Custom amount (USD)</label>
                 <div class="prefix-input">
                   <span class="prefix-input__prefix" aria-hidden="true">$</span>
-                  <input id="unlock-amount-custom" name="amount" type="number" inputmode="decimal" min="2" step="0.01" placeholder="2.00">
+                  <input id="unlock-amount-custom" name="amount" type="number" inputmode="decimal" min="1" step="0.01" placeholder="1.00">
                 </div>
               </div>
             </div>
-            <p class="hint-copy">Choose the amount you'd like to contribute &mdash; minimum $2.</p>
+            <p class="hint-copy">Pay what you think it's worth &mdash; no fixed price, just what feels right.</p>
           </form>
 
           <div class="payment-stack">
@@ -278,22 +266,23 @@
     </section>
     <section class="support-why" aria-labelledby="why-title">
       <div class="section-head">
-        <span class="section-eyebrow">Why it isn't free</span>
-        <h2 class="section-title" id="why-title">An honest, indie unlock</h2>
+        <span class="section-eyebrow">Built by a T1D, for the T1D community</span>
+        <h2 class="section-title" id="why-title">Your support keeps this going</h2>
         <p class="section-lede">
-          Let's be upfront: this is a paid watch face. The free trial lets you try everything first,
-          and if it sticks, your support keeps it maintained &mdash; no ads, no subscriptions, and
-          nothing sold about your data.
+          I live with T1D and built this because I wanted something better on my own wrist.
+          I'm constantly iterating based on feedback from the community — every feature request,
+          bug report and suggestion shapes what ships next. Your support, whatever you feel it's
+          worth, is what makes that possible.
         </p>
       </div>
       <ul class="value-grid">
         <li class="value-card">
-          <h3 class="value-card__title">Pay once, keep it</h3>
-          <p class="value-card__copy">A single payment unlocks the watch face for good. There's no recurring charge and nothing to cancel.</p>
+          <h3 class="value-card__title">Pay once, keep it forever</h3>
+          <p class="value-card__copy">A single payment unlocks the watch face for good. No subscription, no recurring charge, nothing to cancel.</p>
         </li>
         <li class="value-card">
-          <h3 class="value-card__title">Pay what feels fair</h3>
-          <p class="value-card__copy">Pick any amount from $2. A little extra simply helps fund the next round of features and fixes.</p>
+          <h3 class="value-card__title">Pay what it's worth to you</h3>
+          <p class="value-card__copy">No fixed price. If this watch face has made managing your glucose even a little easier, chip in what feels right — every contribution directly funds the next update.</p>
         </li>
         <li class="value-card">
           <h3 class="value-card__title">Secure checkout</h3>
@@ -374,7 +363,7 @@
     claimCodeInput.addEventListener("input", () => syncClaimCode(claimCodeInput.value));
     restoreClaimCodeInput.addEventListener("input", () => syncClaimCode(restoreClaimCodeInput.value));
 
-    const MIN_AMOUNT_USD = 2;
+    const MIN_AMOUNT_USD = 1;
     const amountSelect = document.getElementById("unlock-amount-select");
     const amountCustomField = document.getElementById("unlock-amount-custom-field");
     const amountCustomInput = document.getElementById("unlock-amount-custom");

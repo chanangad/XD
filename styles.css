@@ -460,7 +460,7 @@ font[style*="background-color"] {
     display: flex;
     flex-direction: column;
     gap: 1.1rem;
-    padding: 1.35rem 1.5rem;
+    padding: 1.75rem 1.75rem;
     border-radius: 1.25rem;
     background:
         linear-gradient(135deg, rgba(255, 255, 255, 0.08), transparent 65%),
@@ -514,8 +514,30 @@ font[style*="background-color"] {
     white-space: nowrap;
 }
 
+.price-card__pwyw {
+    font-size: 1.5rem;
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+}
+
+.price-card__store-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    margin-top: 1rem;
+    padding: 0.25rem 0.6rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.12);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--on-primary-muted);
+}
+
 .price-card__region {
-    margin-top: 0.1rem;
+    margin-top: 0.4rem;
     font-size: 0.65rem;
     font-weight: 800;
     letter-spacing: 0.18em;
