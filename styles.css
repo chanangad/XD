@@ -846,6 +846,9 @@ font[style*="background-color"] {
 .support-why {
     margin: 3.5rem 0 0;
 }
+.support-why .section-head {
+    max-width: none;
+}
 
 .value-grid {
     display: grid;
@@ -1094,6 +1097,15 @@ font[style*="background-color"] {
     /* Drop the buttons to line up with the Name/Email row:
        label 1.2 + field gap 0.6 + input 3.75 + form-grid gap 1.45 */
     padding-top: 7rem;
+}
+
+.payment-method-label {
+    margin: 0 0 -.75rem;
+    font-size: .75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .07em;
+    color: var(--muted);
 }
 
 .payment-option--ghost {
