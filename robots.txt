@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /success/
+Disallow: /unlock/
+Disallow: /restore/
+
+Sitemap: https://loopface.app/sitemap.xml
