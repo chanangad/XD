@@ -757,7 +757,7 @@
           <div class="app-card">
             <div class="app-card__os">Android &amp; iOS</div>
             <div class="app-card__name">Nightscout</div>
-            <p class="app-card__desc">Self-hosted CGM data platform. Works with any CGM that uploads to it. LoopFace reads glucose data directly from your Nightscout URL.</p>
+            <p class="app-card__desc">Self-hosted CGM data platform. LoopFace reads glucose, trend and delta from your Nightscout URL. If a looping system (AAPS/OpenAPS) is writing to it, IOB, COB and basal rate are shown too.</p>
             <a href="https://nightscout.github.io" target="_blank" rel="noreferrer" class="app-card__link">
               nightscout.github.io
               <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
@@ -880,7 +880,7 @@
           </div>
           <div class="callout callout--info" style="margin-top:1rem;margin-bottom:0">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-            <span><strong>IOB and COB</strong> are available with AAPS and Spike. <strong>Basal Rate</strong> is only available with AAPS. All three are hidden when using xDrip+, which does not expose pump data.</span>
+            <span><strong>IOB, COB and Basal Rate</strong> are available with AAPS and Spike. Nightscout also shows these if a looping system is writing to your site. All three are hidden when using xDrip+, which does not expose pump data. You can display basal rate as U/h instead of % — enable <strong>Show BR as U/h</strong> and enter your <strong>Base Basal Rate</strong> in settings.</span>
           </div>
         </div>
 
@@ -1078,7 +1078,7 @@
           </div>
           <div class="callout callout--info" style="margin-top:1rem;margin-bottom:0">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-            <span><strong>IOB, COB and Basal Rate are not shown when using Nightscout</strong> — Nightscout's SGV endpoint does not carry pump data. The glucose reading, trend arrow, delta, and graph will all work normally. Your phone must have an active internet connection to reach your Nightscout site.</span>
+            <span><strong>If you use a looping system (AAPS, OpenAPS) with Nightscout</strong>, IOB, COB and Basal Rate will be shown automatically — LoopFace fetches these from your site's <code>/api/v2/properties/iob,cob,basal</code> endpoint. CGM-only Nightscout users will see glucose, trend arrow, delta and the graph. Your phone must have an active internet connection to reach your Nightscout site.</span>
           </div>
         </div>
       </section>
@@ -1111,7 +1111,7 @@
             <span class="instr-step__num">3</span>
             <div class="instr-step__body">
               <h3 class="instr-step__title">You should now see live glucose data</h3>
-              <p class="instr-step__copy">The watch face will show current glucose, trend arrow, delta, and a background graph. IOB and COB are shown for AAPS and Spike. Nightscout and xDrip+ do not provide pump data.</p>
+              <p class="instr-step__copy">The watch face will show current glucose, trend arrow, delta, and a background graph. IOB, COB and basal rate are shown for AAPS, Spike, and Nightscout users with a connected looping system. xDrip+ shows glucose only.</p>
             </div>
           </li>
         </ol>
@@ -1156,9 +1156,8 @@
           <div class="trouble-item">
             <p class="trouble-item__q">IOB / COB / Basal Rate not showing</p>
             <p class="trouble-item__a">
-              <strong>IOB and COB</strong> are available with AAPS and Spike. <strong>Basal Rate</strong> is AAPS-only. All three are hidden for xDrip+ and Nightscout, which do not expose pump data.
-              If you're using AAPS and still not seeing them, make sure the Garmin Plugin is
-              enabled in AAPS Config Builder.
+              <strong>IOB, COB and Basal Rate</strong> are available with AAPS and Spike. Nightscout also shows them if a looping system (AAPS/OpenAPS) is uploading to your site — LoopFace fetches them from <code>/api/v2/properties/iob,cob,basal</code>. xDrip+ does not expose pump data so all three are always hidden.
+              If you're using AAPS and still not seeing them, make sure the Garmin Plugin is enabled in AAPS Config Builder.
             </p>
           </div>
           <div class="trouble-item">
@@ -1184,6 +1183,15 @@
               opened in your phone's browser. If your site requires authentication, append
               <code>?token=YOUR_READ_TOKEN</code> to the URL. Also confirm your phone has an active
               internet connection — unlike AAPS/xDrip+/Spike, Nightscout requires internet access.
+            </p>
+          </div>
+          <div class="trouble-item">
+            <p class="trouble-item__q">IOB / COB / Basal Rate not showing with Nightscout</p>
+            <p class="trouble-item__a">
+              These are only available when a looping system (AAPS, OpenAPS) is uploading to your Nightscout site.
+              LoopFace fetches them from <code>/api/v2/properties/iob,cob,basal</code> — verify this URL returns
+              data in your browser. If you only use Nightscout as a CGM viewer without a loop, these fields will
+              not appear.
             </p>
           </div>
         </div>
