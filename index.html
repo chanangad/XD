@@ -187,8 +187,9 @@
             <p class="payment-method-label">Pay with</p>
             <div class="payment-group">
               <div class="payment-group__buttons">
+                <button type="button" id="razorpay-intl-button" class="pay-button pay-button--razorpay">Card or Wallet</button>
+                <button type="button" id="dodo-button" class="pay-button pay-button--dodo">Other Payment Methods</button>
                 <button type="submit" form="unlock-form" class="pay-button pay-button--paypal">PayPal</button>
-                <button type="button" id="dodo-button" class="pay-button pay-button--dodo">Card or Wallet</button>
               </div>
             </div>
           </div>
@@ -365,6 +366,13 @@
             window.location.href = data.approveUrl;
             return;
           }
+        } else if (provider === "razorpay") {
+          setPanelStatus(unlockStatus, "Creating Razorpay checkout\u2026");
+          const data = await postJson("/api/razorpay/create-link", { claimCode, email, name, currency: "USD" });
+          if (data && data.shortUrl) {
+            window.location.href = data.shortUrl;
+            return;
+          }
         } else {
           setPanelStatus(unlockStatus, "Creating Dodo Payments checkout\u2026");
           const data = await postJson("/api/dodo/create-checkout", payload);
@@ -382,6 +390,9 @@
     document.getElementById("unlock-form").addEventListener("submit", async (event) => {
       event.preventDefault();
       await beginCheckout("paypal");
+    });
+    document.getElementById("razorpay-intl-button").addEventListener("click", async () => {
+      await beginCheckout("razorpay");
     });
     document.getElementById("dodo-button").addEventListener("click", async () => {
       await beginCheckout("dodo");

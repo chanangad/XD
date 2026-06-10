@@ -1227,6 +1227,11 @@ font[style*="background-color"] {
     gap: 0.75rem;
 }
 
+.pay-button--razorpay {
+    background: var(--secondary-strong);
+    color: var(--secondary-ink);
+}
+
 .pay-button--dodo {
     background: var(--primary-strong);
     color: var(--on-primary);
