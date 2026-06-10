@@ -352,7 +352,7 @@
         setPanelStatus(unlockStatus, "Enter your email first.", "warn");
         return;
       }
-      if (!Number.isFinite(amount) || amount < MIN_AMOUNT_USD) {
+      if (provider!=="razorpay" && (!Number.isFinite(amount) || amount < MIN_AMOUNT_USD)) {
         setPanelStatus(unlockStatus, `Enter an amount of at least $${MIN_AMOUNT_USD.toFixed(2)}.`, "warn");
         return;
       }
