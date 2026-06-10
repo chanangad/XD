@@ -352,7 +352,7 @@
         setPanelStatus(unlockStatus, "Enter your email first.", "warn");
         return;
       }
-      if (provider!=="razorpay" && (!Number.isFinite(amount) || amount < MIN_AMOUNT_USD)) {
+      if (!Number.isFinite(amount) || amount < MIN_AMOUNT_USD) {
         setPanelStatus(unlockStatus, `Enter an amount of at least $${MIN_AMOUNT_USD.toFixed(2)}.`, "warn");
         return;
       }
@@ -368,7 +368,7 @@
           }
         } else if (provider === "razorpay") {
           setPanelStatus(unlockStatus, "Creating Razorpay checkout\u2026");
-          const data = await postJson("/api/razorpay/create-link", { claimCode, email, name, currency: "USD" });
+          const data = await postJson("/api/razorpay/create-link", { claimCode, email, name, amount: amount.toFixed(2), currency: "USD" });
           if (data && data.shortUrl) {
             window.location.href = data.shortUrl;
             return;
