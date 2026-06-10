@@ -185,11 +185,18 @@
 
           <div class="payment-stack">
             <p class="payment-method-label">Pay with</p>
-            <div class="payment-group">
+            <div class="payment-group" id="payment-group-intl">
+              <p class="hint-copy">International</p>
               <div class="payment-group__buttons">
                 <button type="button" id="razorpay-intl-button" class="pay-button pay-button--razorpay">Card or Wallet</button>
                 <button type="button" id="dodo-button" class="pay-button pay-button--dodo">Other Payment Methods</button>
                 <button type="submit" form="unlock-form" class="pay-button pay-button--paypal">PayPal</button>
+              </div>
+            </div>
+            <div class="payment-group" id="payment-group-india">
+              <p class="hint-copy">India</p>
+              <div class="payment-group__buttons">
+                <button type="button" id="razorpay-inr-button" class="pay-button pay-button--razorpay">Pay with Razorpay</button>
               </div>
             </div>
           </div>
@@ -338,7 +345,7 @@
       }
     });
 
-    async function beginCheckout(provider) {
+    async function beginCheckout(provider, currency) {
       const suffix = claimCodeInput.value.trim().toUpperCase();
       const claimCode = formatClaimCode(suffix);
       const name = document.getElementById("unlock-name").value.trim();
@@ -368,7 +375,7 @@
           }
         } else if (provider === "razorpay") {
           setPanelStatus(unlockStatus, "Creating Razorpay checkout\u2026");
-          const data = await postJson("/api/razorpay/create-link", { claimCode, email, name, amount: amount.toFixed(2), currency: "USD" });
+          const data = await postJson("/api/razorpay/create-link", { claimCode, email, name, amount: amount.toFixed(2), currency: currency || "USD" });
           if (data && data.shortUrl) {
             window.location.href = data.shortUrl;
             return;
@@ -387,12 +394,31 @@
       }
     }
 
+    // Geo-detection: show India group for IST users, international group for everyone else
+    const isIndia = (function() {
+      try {
+        const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        return tz === "Asia/Kolkata" || tz === "Asia/Calcutta";
+      } catch (e) {
+        return false;
+      }
+    })();
+
+    if (!isIndia) {
+      document.getElementById("payment-group-india").style.display = "none";
+    } else {
+      document.getElementById("payment-group-intl").style.display = "none";
+    }
+
     document.getElementById("unlock-form").addEventListener("submit", async (event) => {
       event.preventDefault();
       await beginCheckout("paypal");
     });
     document.getElementById("razorpay-intl-button").addEventListener("click", async () => {
-      await beginCheckout("razorpay");
+      await beginCheckout("razorpay", "USD");
+    });
+    document.getElementById("razorpay-inr-button").addEventListener("click", async () => {
+      await beginCheckout("razorpay", "INR");
     });
     document.getElementById("dodo-button").addEventListener("click", async () => {
       await beginCheckout("dodo");
