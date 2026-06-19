@@ -67,8 +67,10 @@
     // Dodo Payments appends payment_id/status/email to the return URL.
     const dodoPaymentId = query("payment_id").trim();
     const dodoStatus = query("status").trim().toLowerCase();
+    // Razorpay appends razorpay_payment_link_reference_id (the claim code) on return.
+    const razorpayClaimCode = query("razorpay_payment_link_reference_id").trim().toUpperCase();
     const directClaimCode = query("code").trim().toUpperCase();
-    const claimCode = directClaimCode;
+    const claimCode = directClaimCode || razorpayClaimCode;
 
     function setMessage(title, copy, status, kind) {
       if (title) {
