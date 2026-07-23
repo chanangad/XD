@@ -188,9 +188,11 @@
             <div class="payment-group" id="payment-group-intl">
               <p class="hint-copy">International</p>
               <div class="payment-group__buttons">
+                <!-- International Razorpay + PayPal disabled — international uses Dodo only.
                 <button type="button" id="razorpay-intl-button" class="pay-button pay-button--razorpay">Card or Wallet</button>
-                <button type="button" id="dodo-button" class="pay-button pay-button--dodo">Other Payment Methods</button>
                 <button type="submit" form="unlock-form" class="pay-button pay-button--paypal">PayPal</button>
+                -->
+                <button type="button" id="dodo-button" class="pay-button pay-button--dodo">Card/Wallet</button>
               </div>
             </div>
             <div class="payment-group" id="payment-group-india">
@@ -412,11 +414,13 @@
 
     document.getElementById("unlock-form").addEventListener("submit", async (event) => {
       event.preventDefault();
-      await beginCheckout("paypal");
+      if (isIndia) { await beginCheckout("razorpay", "INR"); }
+      else { await beginCheckout("dodo"); }
     });
-    document.getElementById("razorpay-intl-button").addEventListener("click", async () => {
-      await beginCheckout("razorpay", "USD");
-    });
+    // International Razorpay disabled — international uses Dodo only.
+    // document.getElementById("razorpay-intl-button").addEventListener("click", async () => {
+    //   await beginCheckout("razorpay", "USD");
+    // });
     document.getElementById("razorpay-inr-button").addEventListener("click", async () => {
       await beginCheckout("razorpay", "INR");
     });
