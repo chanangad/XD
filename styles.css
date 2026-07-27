@@ -2211,3 +2211,84 @@ font[style*="background-color"] {
         padding: 0.4rem 0.65rem;
     }
 }
+
+/* ─── Connect IQ reviews ─────────────────────────────────────────────── */
+.reviews {
+    margin: 3.5rem 0 0;
+}
+.reviews .section-head {
+    max-width: none;
+}
+.reviews__rating {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    margin: 0.75rem 0 0;
+    font-weight: 700;
+    color: var(--ink);
+}
+.reviews__stars {
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    font-size: 1.15rem;
+}
+.reviews__score {
+    font-size: 1.15rem;
+}
+.reviews__meta {
+    font-weight: 500;
+    font-size: 0.875rem;
+    color: var(--muted);
+}
+.reviews__meta a {
+    color: var(--accent);
+    text-decoration: none;
+}
+.reviews__meta a:hover {
+    text-decoration: underline;
+}
+.reviews__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+    margin-top: 1.5rem;
+}
+.review-card {
+    margin: 0;
+    padding: 1.6rem 1.7rem;
+    background: var(--surface-low);
+    border: 1px solid var(--outline);
+    border-radius: 1.25rem;
+}
+.review-card__stars {
+    margin: 0 0 0.6rem;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+}
+.review-card__text {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--ink);
+}
+.review-card__author {
+    margin-top: 0.9rem;
+    font-size: 0.825rem;
+    color: var(--muted);
+}
+.reviews__all {
+    margin: 1.5rem 0 0;
+    font-size: 0.875rem;
+}
+.reviews__all a {
+    color: var(--accent);
+    text-decoration: none;
+}
+.reviews__all a:hover {
+    text-decoration: underline;
+}
+@media (max-width: 720px) {
+    .reviews__grid {
+        grid-template-columns: 1fr;
+    }
+}
