@@ -1248,12 +1248,38 @@
 
     tabs.forEach(t => t.addEventListener("click", () => activateTab(t.dataset.panel)));
 
+    // Sidebar links that point at a data source (#aaps/#xdrip/#spike/#nightscout)
+    // must ALSO switch the tab — their panels are hidden by default, so scrolling
+    // to the anchor alone leaves the wrong (or no) panel showing.
+    const sideLinks = document.querySelectorAll(".sidebar__link");
+    function scrollToSources() {
+      const section = document.getElementById("step3");
+      if (section) section.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+    sideLinks.forEach(link => {
+      const target = (link.getAttribute("href") || "").replace("#", "");
+      if (panels[target]) {
+        link.addEventListener("click", e => {
+          e.preventDefault();
+          activateTab(target);
+          scrollToSources();
+          sideLinks.forEach(l => l.classList.toggle("active", l === link));
+        });
+      }
+    });
+
+    // Initial tab: ?source= query param, else a #data-source hash (deep link).
     const initial = new URLSearchParams(location.search).get("source");
-    if (initial && panels[initial]) activateTab(initial);
+    const hashTarget = location.hash.replace("#", "");
+    if (initial && panels[initial]) {
+      activateTab(initial);
+    } else if (panels[hashTarget]) {
+      activateTab(hashTarget);
+      scrollToSources();
+    }
 
     // Sidebar active link on scroll
-    const sections = ["intro","step1","step2","step3","step4","aaps","xdrip","spike","troubleshooting","disclaimer"];
-    const sideLinks = document.querySelectorAll(".sidebar__link");
+    const sections = ["intro","step1","step2","step3","step4","aaps","xdrip","spike","nightscout","troubleshooting","disclaimer"];
     const observer = new IntersectionObserver(entries => {
       entries.forEach(e => {
         if (e.isIntersecting) {
